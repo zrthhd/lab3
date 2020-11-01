@@ -15,28 +15,42 @@ int getNum(int num)
 	write(pipefds[1], num, NUM_LENGTH + 1); 
 
 	read(pipefds[0], &num, NUM_LENGTH + 1);
+	return num;
 
 }
 int main(void)
 {
 	int pipefds[2];
-	int buffer;
-	int num;
+	int num = 0;
 	pipe(pipefds);
 	pid_t pid = fork();
 	if(pid == 0)
 	{
-		getNum(num);
-		if(num %2 != 0)
+		int flag;
+		int test = getNum(num);
+		printf("Entered number:%d\n", test);
+		for(int i=2; i <= test/2; ++i){
+			if(test % i == 0)
+			{
+				flag = 1;
+				break;
+			}
+		}
+		if(test == 1)
 		{
-			printf("%d is a prime number. \n", num);
+			printf("%d is neither a prime or composite. \n", test);
 					
 		}
 
 		else
 		{
+			if(flag == 0)
 
-			printf("%d is not a prime number. \n",num);
+			printf("%d is a prime number. \n",test);
+
+			else
+
+			printf("%d is not a prime number. \n",test);
 			
 		}
 		exit (EXIT_SUCCESS);

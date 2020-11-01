@@ -5,10 +5,10 @@
 #include <sys/wait.h>
 #define NUM_LENGTH 2
 
-int getNum()
+int getNum(int num)
 {
 	int pipefds[2];
-	int num;
+/*	int num;*/
 	printf("Please enter a number: ");
 	scanf("%d", &num);
 
@@ -25,19 +25,20 @@ int main(void)
 {
 	int pipefds[2];
 	int buffer;
+	int num;
 	pipe(pipefds);
 	pid_t pid = fork();
 	if(pid == 0)
 	{
-		getNum();
+		getNum(num);
 		exit (EXIT_SUCCESS);
 	}
 
-	if(pid > 0)
+	else if(pid > 0)
 	{
 		wait(NULL);
 
-		getNum();
+		getNum(num);
 	/*	close(pipefds[1]);
 		read(pipefds[0], buffer, NUM_LENGTH + 1);*/ 
 		int i, flag = 0;
@@ -63,7 +64,11 @@ int main(void)
             				printf("%d is a prime number.", num);
         				else
            				printf("%d is not a prime number.", num);
-    	/*	}	*/	}
+    				}
+		}
+
+
+		
 
 	/*	close(pipefds[0]);*/
 	}
